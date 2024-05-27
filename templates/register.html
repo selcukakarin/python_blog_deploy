@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block body %}
+{% load crispy_forms_tags %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <form method="post">
+            <h3>Kayıt ol</h3>
+            <hr>
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            ***********
+            <!--                {% for field in form %}-->
+            <!--                    {% for error in field.errors %}-->
+            <!--                    <p>{{ error }}</p>-->
+            <!--                    {% endfor %}-->
+            <!--                {% endfor %}-->
+
+                            {{ form.as_p }}
+            <!--                {{ form|crispy }}-->
+<!--            {% for field in form %}-->
+<!--            <div class="fieldWrapper">-->
+<!--                {{ field.label_tag }}-->
+<!--                {{ field }}-->
+<!--            </div>-->
+<!--            {% endfor %}-->
+            <br>
+            <button type="submit" class="btn btn-danger">Kayıt ol</button>
+        </form>
+    </div>
+</div>
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>-->
+{% endblock body %}

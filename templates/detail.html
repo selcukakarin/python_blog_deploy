@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block body %}
+{% load static %}
+
+<div class="row">
+    <div class="col-lg-8 offset-2">
+        <!-- Post content-->
+        <article>
+            <!-- Post header-->
+            <header class="mb-4">
+                <!-- Post title-->
+                <h1 class="fw-bolder mb-1">{{ article.title }}</h1>
+                <!-- Post meta content-->
+                <div class="text-muted fst-italic mb-2">{{ article.created_date }}</div>
+                <!-- Author-->
+                <p class="lead">{{ article.author }}</p>
+            </header>
+            <!-- Preview image figure-->
+            {% if article.article_image %}
+            <figure class="mb-4"><img class="img-fluid rounded "
+                                      src="{{ article.article_image.url }}"
+                                      alt="..."></figure>
+            {% endif %}
+            <!-- Post content-->
+            <section class="mb-5">
+                <p class="fs-5 mb-4">{{ article.content|safe }}</p>
+            </section>
+        </article>
+        <section class="mb-5">
+            <h1>Yorum Ekle</h1>
+            <hr>
+            <div class="card bg-light">
+                <div class="card-body">
+                    <!-- Comment form-->
+                    <form class="mb-4" method="post" action="{% url 'article:comment' article.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Yazar:</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                   aria-describedby="yazarHelp" placeholder="Yazar ismi"
+                                   name="comment_author"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label>Yorum:</label>
+                            <textarea class="form-control" rows="3" name="comment_content"
+                                      placeholder="Lütfen yorumunuzu giriniz."
+                                      data-sider-insert-id="3397cf06-3701-48fe-ae6b-569ca16c0cb5"
+                                      data-sider-select-id="cab454df-7321-44da-a1f8-8bd3a783d2bc"
+                            ></textarea>
+                        </div>
+                        <button class="btn btn-danger" type="submit">Ekle</button>
+
+                    </form>
+                    <!-- Comment with nested comments-->
+                    {% for comment in comments %}
+                    <div class="d-flex mb-4">
+                        <!-- Parent comment-->
+                        <div class="flex-shrink-0"><img class="rounded-circle mr-3" style="width:50px"
+                                                        src="{% static 'avatar.png' %}" alt="...">
+                        </div>
+                        <div class="ms-3">
+                            <div class="fw-bold">
+                                <b>{{ comment.comment_author }}</b>
+                                <br>
+                                <sup>{{ comment.comment_date}}</sup>
+                            </div>
+                            {{ comment.comment_content }}
+
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+{% endblock body %}
